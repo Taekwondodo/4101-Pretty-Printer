@@ -1,0 +1,5 @@
+C:\Users\mlawn\Desktop\prog1.Csharp\bin\Debug\SPP.exe
+C:\Users\mlawn\Desktop\prog1.Csharp\bin\Debug\SPP.pdb
+C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.csprojResolveAssemblyReference.cache
+C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.exe
+C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.pdb
