@@ -6,6 +6,7 @@ using Tokens;
 
 namespace Parse
 {
+    
     public class Scanner
     {
         private TextReader In;
@@ -15,6 +16,7 @@ namespace Parse
         private char[] buf = new char[BUFSIZE];
 
         public Scanner(TextReader i) { In = i; }
+        
   
         // TODO: Add any other methods you need
 
@@ -32,7 +34,10 @@ namespace Parse
    
                 // TODO: skip white space and comments
                 
-                while (ch == ' ' || ch == ';' || ch == 13 || ch == 10)
+                while (ch == ' ' 
+                    || ch == ';' 
+                    || ch == 13 
+                    || ch == 10) // Also skip carriage returns(13) and line feeds(10) since that is how Windows does newlines
                 {
                     if (ch == ';')
                          In.ReadLine();
@@ -103,15 +108,22 @@ namespace Parse
                         ch = In.Read();
                     } while (ch >= '0' && ch <= '9');
 
-
                     // make sure that the character following the integer
                     // is not removed from the input stream
                     return new IntToken(i);
                 }
 
                 // Identifiers
-                else if (ch >= 'A' && ch <= 'Z'
-                         // or ch is some other valid first character
+                else if ((ch >= 'A' && ch <= 'Z')
+                       ||(ch >= '$' && ch <= '&')
+                       ||(ch >= '<' && ch <= '@')
+                       ||(ch >= '*' && ch <= '+')
+                       ||(ch >= '-' && ch <= '/')
+                       ||(ch >= '^' && ch <= '_')
+                       || ch == '!'
+                       || ch == ':'
+                       || ch == '~'
+                       // or ch is some other valid first character
                          // for an identifier
                          )
                 {
@@ -120,7 +132,15 @@ namespace Parse
                     // make sure that the character following the integer
                     // is not removed from the input stream
 
-                    return new IdentToken(new String(buf, 0, 0));
+                    int x;
+
+                    for (x = 0; ch != ' '; x++)
+                    {
+                        buf[x] = (char)(ch);
+                        ch = In.Read();
+                    }
+
+                    return new IdentToken(new String(buf, 0, x + 1));
                 }
 
                 // Illegal character
