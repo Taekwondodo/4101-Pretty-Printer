@@ -31,7 +31,15 @@ namespace Parse
                 ch = In.Read();
    
                 // TODO: skip white space and comments
-
+                
+                while(ch == ' ' || ch == ';')
+                {
+                    if (ch == ';')
+                         In.ReadLine();
+                    ch = In.Read();
+                }
+                    
+              
                 if (ch == -1)
                     return null;
         
@@ -71,16 +79,31 @@ namespace Parse
                 // String constants
                 else if (ch == '"')
                 {
+                    int x;
+                    ch = In.Read();
+                
+                    for (x = 0; ch != '"'; x++)
+                    {
+                        buf[x] = Convert.ToChar(ch);
+                        ch = In.Read();
+                    }
                     // TODO: scan a string into the buffer variable buf
-                    return new StringToken(new String(buf, 0, 0));
+                    return new StringToken(new String(buf, 0, x));
+                    
                 }
 
     
                 // Integer constants
                 else if (ch >= '0' && ch <= '9')
                 {
-                    int i = ch - '0';
+                    int k, i;
                     // TODO: scan the number and convert it to an integer
+                    for(k = 0; ch != ' '; k++)
+                    {
+                        i = ch - '0';
+                        buf[k] = (char)i;
+                        ch = In.Read();
+                    }
 
                     // make sure that the character following the integer
                     // is not removed from the input stream
@@ -97,7 +120,7 @@ namespace Parse
                     // make sure that the character following the integer
                     // is not removed from the input stream
 
-                    return new IdentToken(new String(buf, 0, 0));
+                    return new IdentToken(new String(buf, 0, 0)); 
                 }
     
                 // Illegal character
