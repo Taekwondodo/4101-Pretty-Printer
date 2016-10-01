@@ -16,9 +16,30 @@ namespace Parse
         private char[] buf = new char[BUFSIZE];
 
         public Scanner(TextReader i) { In = i; }
-        
-  
-        // TODO: Add any other methods you need
+
+        public int UpperCase(int ch) 
+        {
+            if (ch >= 'a' && ch <= 'z')
+                return ch - 32;
+            return ch;
+        }
+
+        public bool IsValidIdent(int ch)
+        {
+            if ((ch >= 'A' && ch <= 'Z')
+             || (ch >= '$' && ch <= '&')
+             || (ch >= '<' && ch <= '@')
+             || (ch >= '*' && ch <= '+')
+             || (ch >= '-' && ch <= '/')
+             || (ch >= '^' && ch <= '_')
+             || (ch >= '0' && ch <= '9')
+             || ch == '!'
+             || ch == ':'
+             || ch == '~'
+            )
+                return true;
+            return false;
+        }
 
         public Token getNextToken()
         {
@@ -31,24 +52,27 @@ namespace Parse
                 // buffer, but reading individual characters from the
                 // input stream is easier.
                 ch = In.Read();
-   
+                ch = UpperCase(ch);
+
                 // TODO: skip white space and comments
-                
+
                 while (ch == ' ' 
                     || ch == ';' 
-                    || ch == 13 
-                    || ch == 10) // Also skip carriage returns(13) and line feeds(10) since that is how Windows does newlines
+                    || ch == 13
+                    || ch == 10 
+                    ) // Also skip carriage returns(13) and line feeds(10) since that is how Windows does newlines
                 {
                     if (ch == ';')
                          In.ReadLine();
                     ch = In.Read();
+                    ch = UpperCase(ch);
                 }
 
                 if (ch == -1)
                     return null;
 
                 // Special characters
-                else if (ch == '\'')
+                if (ch == '\'')
                     return new Token(TokenType.QUOTE);
                 else if (ch == '(')
                     return new Token(TokenType.LPAREN);
@@ -62,10 +86,11 @@ namespace Parse
                 else if (ch == '#')
                 {
                     ch = In.Read();
+                    ch = UpperCase(ch);
 
-                    if (ch == 't')
+                    if (ch == 'T')
                         return new Token(TokenType.TRUE);
-                    else if (ch == 'f')
+                    else if (ch == 'F')
                         return new Token(TokenType.FALSE);
                     else if (ch == -1)
                     {
@@ -90,9 +115,15 @@ namespace Parse
                     {
                         buf[x] = (char)(ch);
                         ch = In.Read();
+
+                        if (ch == -1)
+                        {
+                            Console.Error.WriteLine("Unexpected EOF following string" + new string(buf, 0, x) + "'");
+                            return null;
+                        }
                     }
                     // TODO: scan a string into the buffer variable buf
-                    return new StringToken(new String(buf, 0, x + 1));
+                    return new StringToken(new String(buf, 0, x));
 
                 }
 
@@ -100,19 +131,35 @@ namespace Parse
                 // Integer constants
                 else if (ch >= '0' && ch <= '9')
                 {
-                    int i = 0;
-                    // TODO: scan the number and convert it to an integer
-                    do
-                    {
-                        i = i * 10 + (ch - '0'); // Adding another digit to the number increases the value of the digits by a factor of 10 each time
-                        ch = In.Read();
-                    } while (ch >= '0' && ch <= '9');
 
                     // make sure that the character following the integer
                     // is not removed from the input stream
+
+                    int i = ch - '0';
+                    ch = In.Peek(); // Using peek helps us to not remove the character after the int 
+
+                    // TODO: scan the number and convert it to an integer
+                    while(ch >= '0' && ch <= '9')
+                    {
+                        i = i * 10 + (ch - '0'); // Adding another digit to a number increases the 
+                                              // value of the original by a factor of 10 each time
+                        In.Read(); // Advance the stream position
+                        ch = In.Peek();
+                    } 
+
+                    // Make sure it is actually an int constant
+                    if (ch != ' '
+                     && ch != 13
+                     && ch != ')'
+                     && ch != ';') // Only valid characters directly after an int
+                    {
+                        In.Read(); //Advance stream position
+                        Console.Error.WriteLine("Invalid character '" + (char)ch + "' following integer constant '" + i + "'");
+                        return getNextToken();
+                    }
                     return new IntToken(i);
                 }
-
+                
                 // Identifiers
                 else if ((ch >= 'A' && ch <= 'Z')
                        ||(ch >= '$' && ch <= '&')
@@ -132,15 +179,32 @@ namespace Parse
                     // make sure that the character following the integer
                     // is not removed from the input stream
 
-                    int x;
+                    buf[0] = (char)ch;
+                    ch = In.Peek();
+                    ch = UpperCase(ch);
 
-                    for (x = 0; ch != ' '; x++)
+                    int x;
+                    for (x = 1; IsValidIdent(ch); x++)
                     {
-                        buf[x] = (char)(ch);
-                        ch = In.Read();
+                        buf[x] = (char)ch;
+
+                        In.Read();
+                        ch = In.Peek();
+                        ch = UpperCase(ch);
                     }
 
-                    return new IdentToken(new String(buf, 0, x + 1));
+                    // Make sure it is actually an identifier
+                    if (ch != ' '
+                     && ch != 13
+                     && ch != ')'
+                     && ch != ';') // Only valid characters directly after an int
+                    {
+                        In.Read(); // Advance stream position
+                        Console.Error.WriteLine("Invalid character '" + (char)ch + "'" + " after identifier '" + new string(buf, 0, x) + "'");
+                        return getNextToken();
+                    }
+
+                    return new IdentToken(new String(buf, 0, x));
                 }
 
                 // Illegal character

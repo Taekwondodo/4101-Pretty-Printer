@@ -3,3 +3,8 @@ C:\Users\mlawn\Desktop\prog1.Csharp\bin\Debug\SPP.pdb
 C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.csprojResolveAssemblyReference.cache
 C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.exe
 C:\Users\mlawn\Desktop\prog1.Csharp\obj\x86\Debug\SPP.pdb
+C:\Users\Michael\Documents\Programs\4101 proj1\bin\Debug\SPP.exe
+C:\Users\Michael\Documents\Programs\4101 proj1\bin\Debug\SPP.pdb
+C:\Users\Michael\Documents\Programs\4101 proj1\obj\x86\Debug\SPP.csprojResolveAssemblyReference.cache
+C:\Users\Michael\Documents\Programs\4101 proj1\obj\x86\Debug\SPP.exe
+C:\Users\Michael\Documents\Programs\4101 proj1\obj\x86\Debug\SPP.pdb
