@@ -58,7 +58,11 @@ namespace Parse
             {
                 TokenType tt = tok.getType();
                 if (tt == TokenType.LPAREN)
-                    return parseRest();
+                {
+                    Node rest = parseRest();
+                    if (rest != null)
+                        return rest; 
+                }
                 else if (tt == TokenType.FALSE)
                     return falseNode;
                 else if (tt == TokenType.TRUE)
@@ -71,7 +75,12 @@ namespace Parse
                     return new StringLit(tok.getStringVal());
                 else if (tt == TokenType.IDENT)
                     return new Ident(tok.getStringVal());
+                else
+                {
+
+                }
             }
+
             return null;       
         }
   
@@ -89,6 +98,7 @@ namespace Parse
                 }
                 else
                 {
+                    Node expr = parseExp(tok);
                     return new Cons(parseExp(tok), parseRest());
                 }
             }
