@@ -17,14 +17,14 @@ namespace Parse
 
         public Scanner(TextReader i) { In = i; }
 
-        public int UpperCase(int ch) 
+        public int UpperCase(ref int ch) 
         {
             if (ch >= 'a' && ch <= 'z')
                 return ch - 32;
             return ch;
         }
 
-        public bool IsValidIdent(int ch)
+        public bool IsValidIdent(int ch) // Used so we don't have to include this ugly conditional in the for loop for idents
         {
             if ((ch >= 'A' && ch <= 'Z')
              || (ch >= '$' && ch <= '&')
@@ -52,7 +52,7 @@ namespace Parse
                 // buffer, but reading individual characters from the
                 // input stream is easier.
                 ch = In.Read();
-                ch = UpperCase(ch);
+                UpperCase(ref ch);
 
                 // TODO: skip white space and comments
 
@@ -65,7 +65,7 @@ namespace Parse
                     if (ch == ';')
                          In.ReadLine();
                     ch = In.Read();
-                    ch = UpperCase(ch);
+                    UpperCase(ref ch);
                 }
 
                 if (ch == -1)
@@ -86,7 +86,7 @@ namespace Parse
                 else if (ch == '#')
                 {
                     ch = In.Read();
-                    ch = UpperCase(ch);
+                    UpperCase(ref ch);
 
                     if (ch == 'T')
                         return new Token(TokenType.TRUE);
@@ -181,7 +181,7 @@ namespace Parse
 
                     buf[0] = (char)ch;
                     ch = In.Peek();
-                    ch = UpperCase(ch);
+                    UpperCase(ref ch);
 
                     int x;
                     for (x = 1; IsValidIdent(ch); x++)
@@ -190,7 +190,7 @@ namespace Parse
 
                         In.Read();
                         ch = In.Peek();
-                        ch = UpperCase(ch);
+                        UpperCase(ref ch);
                     }
 
                     // Make sure it is actually an identifier
