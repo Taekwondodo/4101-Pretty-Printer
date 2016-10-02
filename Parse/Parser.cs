@@ -42,19 +42,58 @@ namespace Parse
     public class Parser {
 	
         private Scanner scanner;
+        // He wants only 1 instance of each of the following type of Node, so I made them fields of this class
+        private BoolLit trueNode = new BoolLit(true);
+        private BoolLit falseNode = new BoolLit(false);
+        private Nil nilNode = new Nil();
 
         public Parser(Scanner s) { scanner = s; }
   
-        public Node parseExp()
+        public Node parseExp(Token tok = null) // Optional parameter used when called within parseRest() incase it reads the first token of an exp
         {
-            // TODO: write code for parsing an exp
-            return null;
+            if (tok == null)
+                tok = scanner.getNextToken(); 
+
+            if (tok != null)
+            {
+                TokenType tt = tok.getType();
+                if (tt == TokenType.LPAREN)
+                    return parseRest();
+                else if (tt == TokenType.FALSE)
+                    return falseNode;
+                else if (tt == TokenType.TRUE)
+                    return trueNode;
+                else if (tt == TokenType.QUOTE)
+                    return new Cons(new Ident("'"), parseRest());
+                else if (tt == TokenType.INT)
+                    return new IntLit(tok.getIntVal());
+                else if (tt == TokenType.STRING)
+                    return new StringLit(tok.getStringVal());
+                else if (tt == TokenType.IDENT)
+                    return new Ident(tok.getStringVal());
+            }
+            return null;       
         }
   
         protected Node parseRest()
         {
-            // TODO: write code for parsing a rest
-            return null;
+            Token tok = scanner.getNextToken();
+
+            if (tok != null)
+            {
+                TokenType tt = tok.getType();
+
+                if (tt == TokenType.RPAREN)
+                {
+                    return nilNode;
+                }
+                else
+                {
+                    return new Cons(parseExp(tok), parseRest());
+                }
+            }
+            else
+                return null;
         }
 
         // TODO: Add any additional methods you might need.

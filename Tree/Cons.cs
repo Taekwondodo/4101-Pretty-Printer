@@ -27,8 +27,46 @@ namespace Tree
         // parsing up to the interpreter.
         void parseList()
         {
-            // TODO: implement this function and any helper functions
-            // you might need.
+            // Not sure how we're intended to "look at the car" for the form, so we'll use this in the meantime
+            // The Ident cast may not work, however.
+            try
+            {
+                Ident identCar = (Ident)car;
+
+                //Determine special type
+                switch (identCar.getName())
+                {
+                    case "'":
+                        form = new Quote();
+                        break;
+                    case "LAMDA":
+                        form = new Lambda();
+                        break;
+                    case "BEGIN":
+                        form = new Begin();
+                        break;
+                    case "IF":
+                        form = new If();
+                        break;
+                    case "LET":
+                        form = new Let();
+                        break;
+                    case "COND":
+                        form = new Cond();
+                        break;
+                    case "DEFINE":
+                        form = new Define();
+                        break;
+                    case "SET":
+                        form = new Set();
+                        break; 
+                    default:
+                        form = new Regular();
+                        break;
+                }
+            }
+            catch
+            { form = new Regular(); }
         }
  
         public override void print(int n)
