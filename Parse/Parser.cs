@@ -43,6 +43,7 @@ namespace Parse
 	
         private Scanner scanner;
         // He wants only 1 instance of each of the following type of Node, so I made them fields of this class
+        // since it is only created once
         private BoolLit trueNode = new BoolLit(true);
         private BoolLit falseNode = new BoolLit(false);
         private Nil nilNode = new Nil();
@@ -77,7 +78,7 @@ namespace Parse
                     return new Ident(tok.getStringVal());
                 else
                 {
-
+                    // I guess throw out any  that isn't supposed to be there
                 }
             }
 
@@ -93,9 +94,7 @@ namespace Parse
                 TokenType tt = tok.getType();
 
                 if (tt == TokenType.RPAREN)
-                {
                     return nilNode;
-                }
                 else
                 {
                     Node expr = parseExp(tok);
