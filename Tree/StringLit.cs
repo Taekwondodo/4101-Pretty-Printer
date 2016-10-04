@@ -13,6 +13,11 @@ namespace Tree
             stringVal = s;
         }
 
+        public override bool isString()
+        {
+            return true;
+        }
+
         public override void print(int n)
         {
 	    // There got to be a more efficient way to print n spaces.

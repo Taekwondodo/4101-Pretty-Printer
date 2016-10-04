@@ -53,7 +53,6 @@ namespace Parse
                 // input stream is easier.
                 ch = In.Read();
                 ch = UpperCase(ch);
-                ch = ch;
 
                 // TODO: skip white space and comments
 

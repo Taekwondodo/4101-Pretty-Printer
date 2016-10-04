@@ -59,11 +59,7 @@ namespace Parse
             {
                 TokenType tt = tok.getType();
                 if (tt == TokenType.LPAREN)
-                {
-                    Node rest = parseRest();
-                    if (rest != null)
-                        return rest; 
-                }
+                    return parseRest();
                 else if (tt == TokenType.FALSE)
                     return falseNode;
                 else if (tt == TokenType.TRUE)
@@ -76,10 +72,18 @@ namespace Parse
                     return new StringLit(tok.getStringVal());
                 else if (tt == TokenType.IDENT)
                     return new Ident(tok.getStringVal());
-                else
+                // DOT and RPAREN shouldn't be read within parseExp(), I think
+                else if (tt == TokenType.DOT)
                 {
-                    // I guess throw out any  that isn't supposed to be there
+                    Console.Error.WriteLine("Illegal DOT Grammar");
+                    return parseExp(); 
                 }
+                else if (tt == TokenType.RPAREN)
+                {
+                    Console.Error.WriteLine("Illegar RPAREN Grammar");
+                    return parseExp(); 
+                }
+
             }
 
             return null;       
@@ -95,11 +99,10 @@ namespace Parse
 
                 if (tt == TokenType.RPAREN)
                     return nilNode;
+                else if (tt == TokenType.DOT)
+                    return parseExp();
                 else
-                {
-                    Node expr = parseExp(tok);
-                    return new Cons(parseExp(tok), parseRest());
-                }
+                    return new Cons(parseExp(tok), parseRest());     
             }
             else
                 return null;

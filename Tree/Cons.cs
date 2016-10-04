@@ -28,7 +28,7 @@ namespace Tree
         void parseList()
         {
             // Not sure how we're intended to "look at the car" for the form, so we'll use this in the meantime
-            // The Ident cast may not work, however.
+            // Looks like it works
             try
             {
                 Ident identCar = (Ident)car;
@@ -68,7 +68,12 @@ namespace Tree
             catch
             { form = new Regular(); }
         }
- 
+
+        public override bool isPair()
+        {
+            return true;
+        }
+
         public override void print(int n)
         {
             form.print(this, n, false);
@@ -77,6 +82,11 @@ namespace Tree
         public override void print(int n, bool p)
         {
             form.print(this, n, p);
+        }
+
+        public override Node getCar()
+        {
+            car.print();
         }
     }
 }
