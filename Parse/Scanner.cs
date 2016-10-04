@@ -17,7 +17,7 @@ namespace Parse
 
         public Scanner(TextReader i) { In = i; }
 
-        public int UpperCase(ref int ch) 
+        public int UpperCase(int ch) 
         {
             if (ch >= 'a' && ch <= 'z')
                 return ch - 32;
@@ -52,7 +52,8 @@ namespace Parse
                 // buffer, but reading individual characters from the
                 // input stream is easier.
                 ch = In.Read();
-                UpperCase(ref ch);
+                ch = UpperCase(ch);
+                ch = ch;
 
                 // TODO: skip white space and comments
 
@@ -65,7 +66,7 @@ namespace Parse
                     if (ch == ';')
                          In.ReadLine();
                     ch = In.Read();
-                    UpperCase(ref ch);
+                    ch = UpperCase(ch);
                 }
 
                 if (ch == -1)
@@ -79,14 +80,29 @@ namespace Parse
                 else if (ch == ')')
                     return new Token(TokenType.RPAREN);
                 else if (ch == '.')
-                    // We ignore the special identifier `...'.
-                    return new Token(TokenType.DOT);
+                {
+                    if (In.Peek() == '.')
+                    {
+                        Console.Error.Write("Invalid input character '..");
+                        In.Read();
+                        if (In.Peek() == '.')
+                        {
+                            Console.Error.Write(".");
+                            In.Read();
+                        }
+                        Console.Error.WriteLine("'");
+                        return getNextToken();
+                    }
+                    else
+                        return new Token(TokenType.DOT);
+                }
+
 
                 // Boolean constants
                 else if (ch == '#')
                 {
                     ch = In.Read();
-                    UpperCase(ref ch);
+                    ch = UpperCase(ch);
 
                     if (ch == 'T')
                         return new Token(TokenType.TRUE);
@@ -181,7 +197,7 @@ namespace Parse
 
                     buf[0] = (char)ch;
                     ch = In.Peek();
-                    UpperCase(ref ch);
+                    ch = UpperCase(ch);
 
                     int x;
                     for (x = 1; IsValidIdent(ch); x++)
@@ -190,7 +206,7 @@ namespace Parse
 
                         In.Read();
                         ch = In.Peek();
-                        UpperCase(ref ch);
+                        ch = UpperCase(ch);
                     }
 
                     // Make sure it is actually an identifier
