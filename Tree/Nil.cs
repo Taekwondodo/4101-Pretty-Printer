@@ -19,14 +19,17 @@ namespace Tree
         }
 
         public override void print(int n, bool p) {
-	    // There got to be a more efficient way to print n spaces.
-	    for (int i = 0; i < n; i++)
-                Console.Write(" ");
+            // There got to be a more efficient way to print n spaces.
 
-            if (p)
+            if (n == 0 || n % 4 == 3) // End of a regular list or quoted list
+                Console.Write("\b) ");
+            else                      // End of a special type
+            {
+                Console.WriteLine("");
+                for (int k = 0; k < (n - 4) / 4; k++)
+                    Console.Write("    ");
                 Console.WriteLine(")");
-            else
-                Console.WriteLine("()");
+            }     
         }
     }
 }

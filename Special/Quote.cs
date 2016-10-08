@@ -13,8 +13,34 @@ namespace Tree
 
         public override void print(Node t, int n, bool p)
         {
-            Console.Write("'");
 
+            Node car, cdr;
+            car = t.getCar();
+            cdr = t.getCdr();
+
+            if (WithinQuoted(n)) // Within a quoted expression
+            {
+                Console.Write("' ");
+                cdr.print(n);
+            }
+            else if (FirstInQuoted(n)) // ' is the first expr in a quoted expression
+            {
+                Console.Write("'");
+                cdr.print(n + 2); // n
+            }
+            else if (FirstAfterDefine(n)) // first exp after special type: if, lambda, define
+            {
+                Console.Write("'");
+                cdr.print(n - 3); // n - 2
+            }
+            else if (InitExpSpecial(n)) // beginning of an exp. If n > 0 then its indented within a special type.
+            {
+                for (int k = 0; k < n / 4; k++)
+                    Console.Write("    ");
+
+                Console.Write("'");
+                cdr.print(n - 2);
+            }
         }
     }
 }

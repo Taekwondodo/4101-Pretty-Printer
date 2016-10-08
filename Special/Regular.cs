@@ -17,15 +17,22 @@ namespace Tree
             car = t.getCar();
             cdr = t.getCdr();
 
-            if (n % 4 == 3) // Within a quoted expression
+            if (WithinQuoted(n)) // Within a quoted expression
             {
-                for (int k = 0; k < (n + 1) / 4; k++)
-                    Console.Write("    ");
-
+                if (car.isPair())
+                    Console.Write("(");
                 car.print(n);
                 cdr.print(n);
             }
-            else if (n % 4 == 1) // first exp after special type: if, lambda, define
+            else if (FirstInQuoted(n)) // car is the first expr in a quoted expression
+            {
+                if (car.isPair())
+                    Console.Write("(");
+                // Quote only affects the first expr after it, so 'n - 1' is only passed to the car
+                car.print(n + 1); // n - 1
+                cdr.print(n + 2); // n
+            }
+            else if (FirstAfterDefine(n)) // first exp after special type: if, lambda, define
             {
                 if (car.isPair())
                     Console.Write("(");
@@ -33,7 +40,7 @@ namespace Tree
                 Console.WriteLine("");
                 cdr.print(n - 1);
             }
-            else if (n >= 0) // beginning of an exp in a special type (excluding set!)
+            else if (InitExpSpecial(n)) // beginning of an exp. If n > 0 then its indented within a special type.
             {
                 for (int k = 0; k < n / 4; k++)
                     Console.Write("    ");
@@ -43,7 +50,7 @@ namespace Tree
                 car.print(n * -1);
                 cdr.print(n);
             }
-            else 
+            else // middle or end of an expr
             {
                 car.print(n);
                 cdr.print(n);
