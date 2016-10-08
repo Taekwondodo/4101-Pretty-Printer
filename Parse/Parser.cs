@@ -80,7 +80,7 @@ namespace Parse
                 }
                 else if (tt == TokenType.RPAREN)
                 {
-                    Console.Error.WriteLine("Illegar RPAREN Grammar");
+                    Console.Error.WriteLine("Illegal RPAREN Grammar");
                     return parseExp(); 
                 }
 

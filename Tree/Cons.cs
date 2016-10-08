@@ -74,19 +74,25 @@ namespace Tree
             return true;
         }
 
+        public override Node getCar()
+        {
+            return car;
+        }
+
+        public override Node getCdr()
+        {
+            return cdr;
+        }
+
         public override void print(int n)
         {
             form.print(this, n, false);
+
         }
 
         public override void print(int n, bool p)
         {
             form.print(this, n, p);
-        }
-
-        public override Node getCar()
-        {
-            car.print();
         }
     }
 }

@@ -13,6 +13,22 @@ namespace Tree
 
         public override void print(Node t, int n, bool p)
         {
+            Node cdr = t.getCdr();
+
+            if (n == -1) // Is this a literal?
+            {
+                Console.Write("Begin");
+                cdr.print(n);
+            }
+            else
+            {
+                Console.WriteLine("Begin");
+
+                n *= -1;
+                n += 4;
+                cdr.print(n + 4);
+            }
+
             
         }
     }
