@@ -13,7 +13,9 @@ namespace Tree
 	
         public override void print(Node t, int n, bool p)
         {
-            // TODO: Implement this function.
+            //Printed as a regular list
+            Special printer = new Regular();
+            printer.print(t, n, p);
         }
     }
 }

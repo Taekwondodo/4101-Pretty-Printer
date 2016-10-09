@@ -87,7 +87,7 @@ namespace Tree
             else if (FirstAfterDefine(n))
             {
                 Console.Write(identName + " ");
-                cdr.print(-1); // We want the whole thing printed on one line, so we treat it like a quoted list.
+                cdr.print(-1); // We want the whole next exp printed on one line, so we treat it like a quoted list.
                 Console.WriteLine();
             }
             else if (InitExpSpecial(n)) 

@@ -57,7 +57,7 @@ namespace Tree
                     case "DEFINE":
                         form = new Define();
                         break;
-                    case "SET":
+                    case "SET!":
                         form = new Set();
                         break; 
                     default:

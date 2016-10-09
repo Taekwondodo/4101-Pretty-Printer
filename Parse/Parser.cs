@@ -59,21 +59,22 @@ namespace Parse
             {
                 TokenType tt = tok.getType();
                 if (tt == TokenType.LPAREN)
+                {
                     return parseRest();
+                }
                 else if (tt == TokenType.FALSE)
                     return falseNode;
                 else if (tt == TokenType.TRUE)
                     return trueNode;
                 else if (tt == TokenType.QUOTE)
                 {
-                    Quote k = new Quote();
                     Cons temp = new Cons(parseExp(), nilNode);
                     if (temp.getCar() == null)
                     {
-                        Console.Error.WriteLine("Valid expression must follow a quote");
+                        Console.Error.WriteLine("Illegal QUOTE Grammar: Valid expression must follow a QUOTE.");
                         return parseExp();
                     }
-                    temp.SetForm(k);
+                    temp.SetForm(new Quote());
                     return temp;
                 }
     
@@ -111,7 +112,18 @@ namespace Parse
                 if (tt == TokenType.RPAREN)
                     return nilNode;
                 else if (tt == TokenType.DOT)
-                    return parseExp();
+                {
+                    Node dotExp = parseExp();
+                    tok = scanner.getNextToken();
+
+                    if (tok.getType() != TokenType.RPAREN)
+                    {
+                        Console.Error.WriteLine("Illegal DOT Grammar: Only one expression can follow a DOT.");
+                        return parseExp(tok);
+                    }
+                    return dotExp;
+                }
+
                 else
                     return new Cons(parseExp(tok), parseRest());     
             }
