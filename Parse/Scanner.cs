@@ -51,6 +51,7 @@ namespace Parse
                 // input buffer and read characters out of that
                 // buffer, but reading individual characters from the
                 // input stream is easier.
+
                 ch = In.Read();
                 ch = UpperCase(ch);
 
@@ -164,6 +165,7 @@ namespace Parse
 
                     // Make sure it is actually an int constant
                     if (ch != ' '
+                     && ch != 10
                      && ch != 13
                      && ch != ')'
                      && ch != ';') // Only valid characters directly after an int
@@ -210,6 +212,7 @@ namespace Parse
 
                     // Make sure it is actually an identifier
                     if (ch != ' '
+                     && ch != 10
                      && ch != 13
                      && ch != ')'
                      && ch != ';') // Only valid characters directly after an int

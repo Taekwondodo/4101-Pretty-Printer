@@ -112,23 +112,16 @@ namespace Parse
                 if (tt == TokenType.RPAREN)
                     return nilNode;
                 else if (tt == TokenType.DOT)
-                {
-                    Node dotExp = parseExp();
-                    tok = scanner.getNextToken();
-
-                    if (tok.getType() != TokenType.RPAREN)
-                    {
-                        Console.Error.WriteLine("Illegal DOT Grammar: Only one expression can follow a DOT.");
-                        return parseExp(tok);
-                    }
-                    return dotExp;
-                }
-
-                else
-                    return new Cons(parseExp(tok), parseRest());     
+                    return parseExp();
+                else 
+                    return new Cons(parseExp(tok), parseRest());  
             }
             else
+            {
+                Console.Error.WriteLine("Illegal rest Grammar: No RPAREN suffix");
                 return null;
+            }
+
         }
 
         // TODO: Add any additional methods you might need.
