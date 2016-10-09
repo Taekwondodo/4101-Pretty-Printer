@@ -36,8 +36,8 @@ namespace Tree
             {
                 if (car.isPair())
                     Console.Write("(");
-                car.print(0);
-                Console.WriteLine("");
+                car.print(n - 2); // resolves to n - 1. We want the next exp printed out on one line
+                Console.WriteLine();
                 cdr.print(n - 1);
             }
             else if (InitExpSpecial(n)) // beginning of an exp. If n > 0 then its indented within a special type.
@@ -48,10 +48,13 @@ namespace Tree
                 if (car.isPair())
                     Console.Write("(");
                 car.print(n * -1);
+                Console.WriteLine();
                 cdr.print(n);
             }
             else // middle or end of an expr
             {
+                if (car.isPair())
+                    Console.Write("(");
                 car.print(n);
                 cdr.print(n);
             }

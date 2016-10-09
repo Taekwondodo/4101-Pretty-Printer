@@ -13,27 +13,7 @@ namespace Tree
 
         public override void print(Node t, int n, bool p)
         {
-             cdr = t.getCdr();
-
-            if (WithinQuoted(n)) // Is this a literal?
-            {
-                Console.Write("Begin ");
-                cdr.print(n);
-            }
-            else if (FirstInQuoted(n))
-            {
-                Console.Write("Begin ");
-                cdr.print(n + 2);
-            }
-            {
-                Console.WriteLine("Begin");
-
-                n *= -1;
-                n += 4;
-                cdr.print(n + 4);
-            }
-
-            
+            PrintBeginLetCond(t, n); 
         }
     }
 }

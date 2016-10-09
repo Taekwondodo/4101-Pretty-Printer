@@ -12,8 +12,8 @@ namespace Tree
 	public Cond() { }
 
         public override void print(Node t, int n, bool p)
-        { 
-            // TODO: Implement this function.
+        {
+            PrintBeginLetCond(t, n);
         }
     }
 }

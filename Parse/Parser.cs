@@ -65,7 +65,7 @@ namespace Parse
                 else if (tt == TokenType.TRUE)
                     return trueNode;
                 else if (tt == TokenType.QUOTE)
-                    return new Cons(new Ident("'"), parseRest());
+                    return new Cons(new Ident("'"), parseExp());
                 else if (tt == TokenType.INT)
                     return new IntLit(tok.getIntVal());
                 else if (tt == TokenType.STRING)
@@ -83,7 +83,6 @@ namespace Parse
                     Console.Error.WriteLine("Illegal RPAREN Grammar");
                     return parseExp(); 
                 }
-
             }
 
             return null;       

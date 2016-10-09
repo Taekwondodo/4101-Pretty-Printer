@@ -13,7 +13,6 @@ namespace Tree
 
         public override void print(Node t, int n, bool p)
         {
-
             Node car, cdr;
             car = t.getCar();
             cdr = t.getCdr();
@@ -33,11 +32,16 @@ namespace Tree
                 Console.Write("'");
                 cdr.print(n - 3); // n - 2
             }
-            else if (InitExpSpecial(n)) // beginning of an exp. If n > 0 then its indented within a special type.
+            else if (InitExpSpecial(n)) // beginning of an exp within a special type.
             {
                 for (int k = 0; k < n / 4; k++)
                     Console.Write("    ");
 
+                Console.Write("'");
+                cdr.print(n - 2);
+            }
+            else
+            {
                 Console.Write("'");
                 cdr.print(n - 2);
             }
