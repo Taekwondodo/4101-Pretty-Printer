@@ -24,7 +24,7 @@ namespace Tree
             {
                 for (int k = 0; k < (n - 4) / 4; k++)
                     Console.Write("    ");
-                Console.WriteLine(")");
+                Console.Write(")");
             }
             else 
                 Console.Write("\b) ");

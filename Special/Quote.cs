@@ -19,18 +19,26 @@ namespace Tree
 
             if (WithinQuoted(n)) // Within a quoted expression
             {
-                Console.Write("' ");
-                cdr.print(n);
+                Console.Write("'");
+                if (car.isPair() && p)
+                    Console.Write("(");
+                car.print(n);
+               // cdr.print(n - 2);
             }
             else if (FirstInQuoted(n)) // ' is the first expr in a quoted expression
             {
                 Console.Write("'");
-                cdr.print(n + 2); // n
+                if (car.isPair() && p)
+                    Console.Write("(");
+                car.print(n);
+               // cdr.print(n + 1); // n - 1
             }
             else if (FirstAfterDefine(n)) // first exp after special type: if, lambda, define
             {
                 Console.Write("'");
-                cdr.print(n - 3); // n - 2
+                if (car.isPair() && p)
+                    Console.Write("(");
+                car.print(n - 2); // n - 1
             }
             else if (InitExpSpecial(n)) // beginning of an exp within a special type.
             {
@@ -38,12 +46,17 @@ namespace Tree
                     Console.Write("    ");
 
                 Console.Write("'");
-                cdr.print(n - 2);
+                if (car.isPair() && p)
+                    Console.Write("(");
+                car.print(n - 1);
             }
             else
             {
                 Console.Write("'");
-                cdr.print(n - 2);
+                if (car.isPair() && p)
+                    Console.Write("(");
+                car.print(n - 1);
+                //cdr.print(n - 1);
             }
         }
     }

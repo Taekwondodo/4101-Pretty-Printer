@@ -50,9 +50,10 @@ public class SPP
 
         // Parse and pretty-print each input expression
         root = parser.parseExp();
+   
         while (root != null) 
         {
-            root.print(0);
+            root.print(0, true);
             root = parser.parseExp();
         }
 

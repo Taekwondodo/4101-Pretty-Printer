@@ -12,21 +12,28 @@ namespace Tree
     {
         public abstract void print(Node t, int n, bool p);
 
+        // Modulo method. Apparently '%' is a remainder operator, not a modulo operator
+        public int mod(int n, int k) 
+        {
+            int r = n % k;
+            return r < 0 ? r + k : r;
+        }
+
         // Methods to determine printing style
 
         public bool WithinQuoted(int n)
-        { return n % 4 == 3; }
+        { return mod(n, 4) == 3; }
         public bool FirstInQuoted(int n)
-        { return n % 4 == 2; }    
+        { return mod(n, 4) == 2; }    
         public bool FirstAfterDefine(int n)
-        { return n % 4 == 1; }
+        { return mod(n, 4) == 1; }
         public bool InitExpSpecial(int n)
-        { return (n > 0 && n % 4 == 0); }
+        { return (n > 0 && mod(n, 4) == 0); }
 
         public void PrintBeginLetCond(Node t, int n)
         {
             Node cdr = t.getCdr();
-            Ident car = (Ident)t.getCdr();
+            Ident car = (Ident)t.getCar();
             string identName = car.getName();
 
             if (WithinQuoted(n))
@@ -37,12 +44,12 @@ namespace Tree
             else if (FirstInQuoted(n))
             {
                 Console.Write(identName + " ");
-                cdr.print(n + 2); // n
+                cdr.print(n + 1); // n - 1
             }
             else if (FirstAfterDefine(n))
             {
                 Console.Write(identName + " ");
-                cdr.print(n - 2); // n - 1 We want the whole thing printed on one line, so we treat it like a quoted list.
+                cdr.print(-1); // n - 1 We want the whole thing printed on one line, so we treat it like a quoted list.
                 Console.WriteLine();
             }
             else if (InitExpSpecial(n)) // Correct syntax won't bring us here
@@ -64,7 +71,7 @@ namespace Tree
         public void PrintIfLamDef(Node t, int n)
         {
             Node cdr = t.getCdr();
-            Ident car = (Ident)t.getCdr();
+            Ident car = (Ident)t.getCar();
             string identName = car.getName();
 
             if (WithinQuoted(n))
@@ -75,15 +82,15 @@ namespace Tree
             else if (FirstInQuoted(n))
             {
                 Console.Write(identName + " ");
-                cdr.print(n + 2); // n
+                cdr.print(n + 1); // n - 1
             }
             else if (FirstAfterDefine(n))
             {
                 Console.Write(identName + " ");
-                cdr.print(n - 2); // We want the whole thing printed on one line, so we treat it like a quoted list.
+                cdr.print(-1); // We want the whole thing printed on one line, so we treat it like a quoted list.
                 Console.WriteLine();
             }
-            else if (InitExpSpecial(n)) // Correct syntax shouldn't bring us here
+            else if (InitExpSpecial(n)) 
             {
                 for (int k = 0; k < n / 4; k++)
                     Console.Write("    ");
@@ -94,6 +101,7 @@ namespace Tree
             else
             {
                 Console.Write(identName + " ");
+                n *= -1;
                 cdr.print(n + 5); // n + 4 + 1
             }
         }

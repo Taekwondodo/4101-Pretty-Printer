@@ -65,23 +65,35 @@ namespace Parse
                 else if (tt == TokenType.TRUE)
                     return trueNode;
                 else if (tt == TokenType.QUOTE)
-                    return new Cons(new Ident("'"), parseExp());
+                {
+                    Quote k = new Quote();
+                    Cons temp = new Cons(parseExp(), nilNode);
+                    if (temp.getCar() == null)
+                    {
+                        Console.Error.WriteLine("Valid expression must follow a quote");
+                        return parseExp();
+                    }
+                    temp.SetForm(k);
+                    return temp;
+                }
+    
                 else if (tt == TokenType.INT)
                     return new IntLit(tok.getIntVal());
                 else if (tt == TokenType.STRING)
                     return new StringLit(tok.getStringVal());
                 else if (tt == TokenType.IDENT)
-                    return new Ident(tok.getStringVal());
+                    return new Ident(tok.getName());
+                
                 // DOT and RPAREN shouldn't be read within parseExp(), I think
                 else if (tt == TokenType.DOT)
                 {
                     Console.Error.WriteLine("Illegal DOT Grammar");
-                    return parseExp(); 
+                    return parseExp();
                 }
                 else if (tt == TokenType.RPAREN)
                 {
                     Console.Error.WriteLine("Illegal RPAREN Grammar");
-                    return parseExp(); 
+                    return parseExp();
                 }
             }
 

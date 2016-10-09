@@ -39,7 +39,7 @@ namespace Tree
                     case "'":
                         form = new Quote();
                         break;
-                    case "LAMDA":
+                    case "LAMBDA":
                         form = new Lambda();
                         break;
                     case "BEGIN":
@@ -69,6 +69,9 @@ namespace Tree
             { form = new Regular(); }
         }
 
+        public void SetForm(Special newForm)
+        { form = newForm; }
+
         public override bool isPair()
         {
             return true;
@@ -86,13 +89,28 @@ namespace Tree
 
         public override void print(int n)
         {
-            form.print(this, n, false);
+            print(n, false);
 
         }
-
-        public override void print(int n, bool p)
+        
+        public override void print(int n, bool p = false)
         {
-            form.print(this, n, p);
+            if (p == true)
+                if (form.ToString() != "Tree.Quote")
+                    Console.Write("(");
+
+            Cons temp;
+            try
+            {
+                temp = (Cons)car;
+                if (temp.form.ToString() != "Tree.Quote")
+                    form.print(this, n, true);
+                else
+                    form.print(this, n, false);
+            }
+            catch { form.print(this, n, true); }
+            
+
         }
     }
 }

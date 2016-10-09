@@ -19,41 +19,41 @@ namespace Tree
 
             if (WithinQuoted(n)) // Within a quoted expression
             {
-                if (car.isPair())
+                if (car.isPair() && p)
                     Console.Write("(");
                 car.print(n);
                 cdr.print(n);
             }
             else if (FirstInQuoted(n)) // car is the first expr in a quoted expression
             {
-                if (car.isPair())
+                if (car.isPair() && p)
                     Console.Write("(");
-                // Quote only affects the first expr after it, so 'n - 1' is only passed to the car
-                car.print(n + 1); // n - 1
-                cdr.print(n + 2); // n
+
+                car.print(n + 1, p); // n - 1
+                // We don't print cdr since it is nil, and the binary has an extra nilNode due to how we have this setup.
             }
             else if (FirstAfterDefine(n)) // first exp after special type: if, lambda, define
             {
-                if (car.isPair())
+                if (car.isPair() && p)
                     Console.Write("(");
-                car.print(n - 2); // resolves to n - 1. We want the next exp printed out on one line
+                car.print(-1); // treat as a quoted expr. We want the next exp printed out on one line
                 Console.WriteLine();
                 cdr.print(n - 1);
             }
-            else if (InitExpSpecial(n)) // beginning of an exp. If n > 0 then its indented within a special type.
+            else if (InitExpSpecial(n)) // beginning of an exp thats indented in a special type
             {
                 for (int k = 0; k < n / 4; k++)
                     Console.Write("    ");
 
-                if (car.isPair())
+                if (car.isPair() && p)
                     Console.Write("(");
                 car.print(n * -1);
                 Console.WriteLine();
                 cdr.print(n);
             }
-            else // middle or end of an expr
+            else // regular list, not indented
             {
-                if (car.isPair())
+                if (car.isPair() && p)
                     Console.Write("(");
                 car.print(n);
                 cdr.print(n);
